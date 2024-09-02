@@ -14,13 +14,13 @@ const router = createRouter({
     {
       path: '/about',
       component: About,
-      meta: { title: 'About' }
+      meta: { title: 'About' },
     }
   ]
 })
 
 const DEFAULT_TITLE: string = 'Ice'
-router.beforeEach((to) => {
+router.afterEach((to) => {
   let title = to.meta?.title
   if (typeof title == 'string') {
     document.title = DEFAULT_TITLE + ' - ' + title
