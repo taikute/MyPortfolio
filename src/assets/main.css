@@ -1,0 +1,16 @@
+@import './base.css';
+
+button {
+    font-weight: 600;
+    font-size: 13px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 4px;
+}
+
+button:active {
+    border-color: transparent;
+    transform: scale(0.99);
+}

@@ -1,0 +1,54 @@
+/* Base Color */
+:root {
+	--dark-background-primary: #010409;
+	--dark-background-secondary: #181818;
+	--dark-text-primary: #F0F6FC;
+	--dark-text-muted: #9097A0;
+	--dark-text-link: #4493F8;
+	--dark-button-primary: #1F8635;
+	--dark-button-hover-primary: #29903B;
+	--dark-button-active-primary: #105823;
+	--dark-on-button: white;
+	--dark-on-button-muted: #;
+}
+
+/* Light Theme */
+:root {
+	--background-color: #;
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-background-primary: var(--dark-background-primary);
+		--color-text-primary: var(--dark-text-primary);
+		--color-button-primary: var(--dark-button-primary);
+		--color-on-button: var(--dark-on-button);
+		--color-button-hover-primary: var(--dark-button-hover-primary);
+		--color-button-active-primary: var(--dark-button-active-primary);
+	}
+}
+
+body {
+	background-color: var(--color-background-primary);
+	color: var(--color-text-primary);
+	font-size: 20px;
+	font-family: Roboto;
+}
+
+button {
+	border-color: var(--color-button-hover-primary);
+}
+
+.button-primary {
+	color: var(--color-on-button);
+	background-color: var(--color-button-primary);
+}
+
+.button-primary:hover {
+	background-color: var(--color-button-hover-primary);
+}
+
+.button-primary:active {
+	background-color: var(--color-button-active-primary);
+}
