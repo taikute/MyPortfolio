@@ -1,7 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>LOGO</h1>
+  <button class="btn btn-primary">ALO</button>
+  <br>
   <RouterView></RouterView>
 </template>
 

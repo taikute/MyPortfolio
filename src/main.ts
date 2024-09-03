@@ -19,11 +19,11 @@ const router = createRouter({
   ]
 })
 
-const DEFAULT_TITLE: string = 'Ice'
+const DEFAULT_TITLE: string = 'Anh Tài'
 router.afterEach((to) => {
   let title = to.meta?.title
   if (typeof title == 'string') {
-    document.title = DEFAULT_TITLE + ' - ' + title
+    document.title = DEFAULT_TITLE + ' | ' + title
   } else {
     document.title = DEFAULT_TITLE
   }
