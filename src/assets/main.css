@@ -6,12 +6,14 @@ html {
 
 body {
 	font-size: 13px;
+	line-height: 1;
 	font-family: "Roboto", system-ui;
 	margin: 0;
 }
 
 button {
 	font-size: 13px;
+	line-height: 1;
 	font-family: "Roboto", system-ui;
 }
 
