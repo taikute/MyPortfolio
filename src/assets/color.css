@@ -43,14 +43,18 @@ body {
 	color: var(--color-text-primary);
 }
 
-.navbar {}
+.nav-bar {}
 
-.navbar a {
+.nav-bar a {
 	color: var(--color-text-primary);
 }
 
-.navbar a:hover {
+.nav-bar a:hover {
 	background-color: var(--dark-text-hover);
+}
+
+.nav-bar .menu-items {
+	background-color: var(--color-background-primary)
 }
 
 .btn {

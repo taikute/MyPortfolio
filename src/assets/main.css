@@ -6,12 +6,14 @@ html {
 
 body {
 	font-size: 13px;
+	line-height: 1;
 	font-family: "Roboto", system-ui;
 	margin: 0;
 }
 
 button {
 	font-size: 13px;
+	line-height: 1;
 	font-family: "Roboto", system-ui;
 }
 
@@ -25,4 +27,9 @@ a {
 	border-width: 2px;
 	border-style: solid;
 	border-radius: 4px;
+}
+
+.divider {
+	height: 2px;
+	background-color: white;
 }
