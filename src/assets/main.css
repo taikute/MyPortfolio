@@ -1,16 +1,28 @@
-@import './base.css';
+@import './color.css';
 
-button {
-    font-weight: 600;
-    font-size: 13px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 4px;
+html {
+	padding: 0;
 }
 
-button:active {
-    border-color: transparent;
-    transform: scale(0.99);
+body {
+	font-size: 13px;
+	font-family: "Roboto", system-ui;
+	margin: 0;
+}
+
+button {
+	font-size: 13px;
+	font-family: "Roboto", system-ui;
+}
+
+a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.btn {
+	padding: 5px 10px;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 4px;
 }

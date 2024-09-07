@@ -1,14 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Nav from './components/Nav.vue';
+</script>
 
 <template>
-  <button class="button-primary">Create a new repository</button>
-  <br>
-  Example text
-  <br>
-  <b>Bold text</b>
-  <br>
-  <u>Underline text</u>
-  <!-- <RouterView></RouterView> -->
+	<Nav></Nav>
+	<div class="divider"></div>
+	<!-- <RouterView></RouterView> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+.divider {
+	height: 2px;
+	background-color: white;
+}
+</style>
