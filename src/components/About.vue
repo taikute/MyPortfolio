@@ -1,3 +1,10 @@
 <template>
-	<h1>About</h1>
+	<div class="header-container">About me</div>
+	<div ></div>
 </template>
+
+<style scoped>
+.header-container {
+	font-size: 30px;
+}
+</style>

@@ -59,6 +59,7 @@ function closeMenu() {
 	font-size: 25px;
 	font-weight: 500;
 	padding: 4px 8px;
+	border-radius: 8px;
 }
 
 .nav-items {
@@ -123,7 +124,7 @@ function closeMenu() {
 	border-radius: 4px;
 }
 
-@media (min-width:768px) {
+@media (min-width:480px) {
 	.menu {
 		display: none;
 	}
