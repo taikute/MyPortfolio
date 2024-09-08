@@ -3,29 +3,19 @@
 		<RouterLink class="nav-header" to="/">Anh Tài</RouterLink>
 
 		<div class="menu" :class="menuState">
-			<div class="menu-btn" @click="menuBtn">
+			<div class="menu-btn" @click="changeMenu">
 				<div class="bar1"></div>
 				<div class="bar2"></div>
 				<div class="bar3"></div>
 			</div>
 
-			<div class="menu-items">
-				<RouterLink to="/about">Menu Item Longgggggg</RouterLink>
-				<RouterLink to="/about">Menu Item</RouterLink>
-				<RouterLink to="/about">Menu Item</RouterLink>
-				<RouterLink to="/about">Menu Item</RouterLink>
-				<RouterLink to="/about">Menu Item</RouterLink>
-				<RouterLink to="/about">Menu Item</RouterLink>
+			<div class="menu-items" @click="closeMenu">
+				<RouterLink v-for="item in navItems" :to="item.path">{{ item.name }}</RouterLink>
 			</div>
 		</div>
 
 		<div class="nav-items">
-			<RouterLink to="/about">NavItem</RouterLink>
-			<RouterLink to="/about">NavItem</RouterLink>
-			<RouterLink to="/about">NavItem</RouterLink>
-			<RouterLink to="/about">NavItem</RouterLink>
-			<RouterLink to="/about">NavItem</RouterLink>
-			<RouterLink to="/about">NavItem</RouterLink>
+			<RouterLink v-for="item in navItems" :to="item.path">{{ item.name }}</RouterLink>
 		</div>
 	</nav>
 	<div class="divider"></div>
@@ -34,61 +24,103 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
+const navItems = [
+	{ path: '/about', name: 'About' },
+	{ path: '/about', name: 'About' },
+	{ path: '/about', name: 'About' },
+]
+
 const menuState = ref<string | null>(null)
-function menuBtn() {
+function changeMenu() {
 	if (menuState.value == null) {
-		menuState.value = 'menu-show'
+		openMenu()
 	} else {
-		menuState.value = null
+		closeMenu()
 	}
+}
+function openMenu() {
+	menuState.value = 'show-menu'
+}
+function closeMenu() {
+	menuState.value = null
 }
 </script>
 
 <style scoped>
-.menu-btn {
-	cursor: pointer;
+.nav-bar {
+	margin: 0 8px;
+	height: 50px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.menu-items {
-	padding: 8px 0px;
-	display: none;
-	flex-direction: column;
-	position: absolute;
-	right: 0px;
-	background-color: black;
-	border: 2px solid;
-	border-radius: 4px;
-	padding: 4px;
+.nav-header {
+	font-size: 25px;
+	font-weight: 500;
+	padding: 4px 8px;
 }
 
 .nav-items {
 	display: none;
 }
 
-.bar1,
-.bar2,
-.bar3 {
-	width: 35px;
-	height: 5px;
+.nav-items a {
+	font-size: 15px;
+	padding: 8px;
+	margin: 0px 4px;
+	border-radius: 4px;
+}
+
+.menu-btn {
+	cursor: pointer;
+	padding: 6px;
+}
+
+.menu-btn div {
+	width: 30px;
+	height: 4px;
 	background-color: white;
-	margin: 6px 0;
-	transition: 0.4s;
+	transition: 0.2s;
 }
 
-.menu-show .menu-btn .bar1 {
-	transform: translate(0, 11px) rotate(-45deg);
+.menu-btn .bar2 {
+	margin: 5px 0;
 }
 
-.menu-show .menu-btn .bar2 {
+.show-menu .menu-btn .bar1 {
+	transform: translate(0, 9px) rotate(-45deg);
+}
+
+.show-menu .menu-btn .bar2 {
 	opacity: 0;
 }
 
-.menu-show .menu-btn .bar3 {
-	transform: translate(0, -11px) rotate(45deg);
+.show-menu .menu-btn .bar3 {
+	transform: translate(0, -9px) rotate(45deg);
 }
 
-.menu-show .menu-items {
+.show-menu .menu-items {
 	display: flex;
+}
+
+.menu-items {
+	display: none;
+	padding: 8px 8px;
+	min-width: 300px;
+	flex-direction: column;
+	position: absolute;
+	right: 8px;
+	top: 60px;
+	background-color: black;
+	border: 2px solid;
+	border-radius: 10px;
+}
+
+.menu-items a {
+	font-size: 16px;
+	padding: 8px 10px;
+	border-radius: 4px;
 }
 
 @media (min-width:768px) {
@@ -99,25 +131,5 @@ function menuBtn() {
 	.nav-items {
 		display: inline;
 	}
-}
-
-.nav-header {
-	font-size: 18px;
-	font-weight: 500;
-	padding: 4px 8px;
-}
-
-.navbar {
-	margin: 0 8px;
-	height: 50px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.nav-items a {
-	font-size: 15px;
-	padding: 4px 4px;
-	border-radius: 4px;
 }
 </style>

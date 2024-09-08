@@ -1,4 +1,4 @@
-@import './color.css';
+@import './theme.css';
 
 html {
 	padding: 0;
@@ -11,13 +11,8 @@ body {
 	margin: 0;
 }
 
-button {
-	font-size: 13px;
-	line-height: 1;
-	font-family: "Roboto", system-ui;
-}
-
 a {
+	display: inline-block;
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -32,4 +27,5 @@ a {
 .divider {
 	height: 2px;
 	background-color: white;
+	margin-bottom: 16px;
 }

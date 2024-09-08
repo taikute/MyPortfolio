@@ -54,7 +54,7 @@ body {
 }
 
 .nav-bar .menu-items {
-	background-color: var(--color-background-primary)
+	background-color: var(--color-background-primary);
 }
 
 .btn {
