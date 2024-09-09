@@ -10,17 +10,18 @@
 			I'm a passionate <b>Software Engineer</b> from Vietnam.
 		</div>
 		<div class="contact-container">
-			<div class="phone">Phone</div>
-			<div class="email">Email</div>
-			<div class="github">Github</div>
-			<div class="facebook">Facebook</div>
+			<i class="fa-solid fa-phone" @click="href('tel:0389653102')"></i>
+			<i class="fa-solid fa-envelope" @click="href('mailto:anhtai05102002@gmail.com')"></i>
+			<i class="fa-brands fa-github" @click="href('https://github.com/taikute')"></i>
+			<i class="fa-brands fa-facebook" @click="href('https://www.facebook.com/profile.php?id=100034716938533')"></i>
 		</div>
-
 	</div>
 </template>
 
 <script setup lang="ts">
-
+function href(link: string) {
+	window.open(link, '_blank');
+}
 </script>
 
 <style scoped>
@@ -49,21 +50,21 @@
 }
 
 .contact-container {
-	margin: 30px 0 0;
 	display: flex;
-	flex-wrap: wrap;
+	justify-content: space-around;
+	margin: 30px 0 0;
 }
 
-.contact-container div {
-	text-align: center;
-	width: 50%;
-	padding: 8px 0;
-	border: 2px solid;
+.contact-container i {
+	font-size: 30px;
+	padding: 5px 20px;
+	border-radius: 8px;
+	cursor: pointer;
 }
 
-@media (min-width: 480px) {
-	.container {
-		display: none;
-	}
+.contact-container i:hover {
+	background-color: var(--dark-text-hover);
 }
+
+@media (min-width: 480px) {}
 </style>
