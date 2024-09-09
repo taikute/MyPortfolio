@@ -25,8 +25,8 @@
 import { ref } from 'vue';
 
 const navItems = [
-	{ path: '/about', name: 'About' },
-	{ path: '/about', name: 'About' },
+	{ path: '/cv', name: 'CV' },
+	{ path: '/projects', name: 'Projects' },
 	{ path: '/about', name: 'About' },
 ]
 

@@ -37,7 +37,7 @@ body {
 }
 
 .nav-bar a:hover {
-	background-color: var(--dark-text-hover);
+	background-color: var(--color-text-hover);
 }
 
 .nav-bar .menu-items {
