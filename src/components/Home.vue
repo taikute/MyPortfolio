@@ -10,17 +10,20 @@
 			I'm a passionate <b>Software Engineer</b> from Vietnam.
 		</div>
 		<div class="contact-container">
-			<i class="fa-solid fa-phone" @click="href('tel:0389653102')"></i>
-			<i class="fa-solid fa-envelope" @click="href('mailto:anhtai05102002@gmail.com')"></i>
-			<i class="fa-brands fa-github" @click="href('https://github.com/taikute')"></i>
-			<i class="fa-brands fa-facebook" @click="href('https://www.facebook.com/profile.php?id=100034716938533')"></i>
+			<i class="fa-solid fa-phone" @click="redirect('tel:0389653102')"></i>
+			<i class="fa-solid fa-envelope" @click="redirect('mailto:anhtai05102002@gmail.com')"></i>
+			<i class="fa-brands fa-github" @click="newTab('https://github.com/taikute')"></i>
+			<i class="fa-brands fa-facebook" @click="newTab('https://www.facebook.com/profile.php?id=100034716938533')"></i>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-function href(link: string) {
-	window.open(link, '_blank');
+function newTab(url: string) {
+	window.open(url, '_blank');
+}
+function redirect(url: string) {
+	window.location.href = url;
 }
 </script>
 

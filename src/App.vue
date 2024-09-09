@@ -9,7 +9,7 @@ import Nav from './components/Nav.vue'
 	</div>
 </template>
 
-<style scoped>
+<style>
 .body-container {
 	margin: 0px 8px;
 }
