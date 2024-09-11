@@ -27,7 +27,7 @@ import { ref } from 'vue';
 const navItems = [
 	{ path: '/cv', name: 'CV' },
 	{ path: '/projects', name: 'Projects' },
-	{ path: '/about', name: 'About' },
+	{ path: '/credit', name: 'Credit' },
 ]
 
 const menuState = ref<string | null>(null)

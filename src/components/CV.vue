@@ -1,7 +1,6 @@
 <template>
 	<div class="container">
 		<a :href="cvUrl" class="btn btn-primary">Download my CV</a>
-
 		<img src="../assets/nguyenanhtai_cv.jpg" alt="cv">
 	</div>
 </template>

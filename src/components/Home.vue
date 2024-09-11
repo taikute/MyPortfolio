@@ -29,10 +29,6 @@ function redirect(url: string) {
 </script>
 
 <style scoped>
-.container {
-	margin-top: 30px;
-}
-
 .left {
 	text-align: center;
 }
@@ -99,7 +95,7 @@ function redirect(url: string) {
 		align-items: center;
 	}
 
-	@media (min-width: 992px) {
+	@media (min-width: 1024px) {
 		.left {
 			width: 50%;
 		}
