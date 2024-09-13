@@ -12,56 +12,57 @@
 /* :root {} */
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--color-background-primary: #010409;
-		--color-text-primary: #F0F6FC;
-		--color-text-muted: #9097A0;
-		--color-text-hover: #15191F;
-		--color-button-primary: #1F8635;
-		--color-on-button: white;
-		--color-on-button-muted: #9198A1;
-		--color-button-hover-primary: #29903B;
-		--color-button-active-primary: #105823;
-	}
+  :root {
+    --color-background-primary: #010409;
+    --color-text-primary: #f0f6fc;
+    --color-text-muted: #9097a0;
+    --color-text-hover: #15191f;
+    --color-button-primary: #1f8635;
+    --color-on-button: white;
+    --color-on-button-muted: #9198a1;
+    --color-button-hover-primary: #29903b;
+    --color-button-active-primary: #105823;
+  }
 }
 
 body {
-	background-color: var(--color-background-primary);
-	color: var(--color-text-primary);
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
-.nav-bar {}
+.nav-bar {
+}
 
 .nav-bar a {
-	color: var(--color-text-primary);
+  color: var(--color-text-primary);
 }
 
 .nav-bar a:hover {
-	background-color: var(--color-text-hover);
+  background-color: var(--color-text-hover);
 }
 
 .nav-bar .menu-items {
-	background-color: var(--color-background-primary);
+  background-color: var(--color-background-primary);
 }
 
 .btn {
-	border-color: var(--color-button-hover-primary);
+  border-color: var(--color-button-hover-primary);
 }
 
 .btn:active {
-	border-color: transparent;
+  border-color: transparent;
 }
 
 .btn-primary {
-	color: var(--color-on-button);
-	background-color: var(--color-button-primary);
+  color: var(--color-on-button);
+  background-color: var(--color-button-primary);
 }
 
 .btn-primary:hover {
-	background-color: var(--color-button-hover-primary);
+  background-color: var(--color-button-hover-primary);
 }
 
 .btn-primary:active {
-	color: var(--color-text-muted);
-	background-color: var(--color-button-active-primary);
+  color: var(--color-text-muted);
+  background-color: var(--color-button-active-primary);
 }

@@ -1,31 +1,32 @@
-@import './theme.css';
+@import "./theme.css";
 
 html {
-	padding: 0;
+  padding: 0;
 }
 
 body {
-	font-size: 13px;
-	line-height: 1;
-	font-family: "Roboto", system-ui;
-	margin: 0;
+  font-size: 13px;
+  line-height: 1;
+  font-family: "Roboto", system-ui;
+  margin: 0;
 }
 
 a {
-	display: inline-block;
-	text-decoration: none;
-	cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
 }
 
 .btn {
-	padding: 5px 10px;
-	border-width: 2px;
-	border-style: solid;
-	border-radius: 4px;
+  padding: 5px 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 4px;
 }
 
 .divider {
-	margin-bottom: 30px;
-	height: 2px;
-	background-color: white;
+  margin-bottom: 30px;
+  height: 2px;
+  background-color: white;
 }
