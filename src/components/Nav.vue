@@ -31,7 +31,7 @@ import { ref } from "vue";
 const navItems = [
   { path: "/cv", name: "CV" },
   { path: "/projects", name: "Projects" },
-  { path: "/credit", name: "Credit" },
+  { path: "/chat", name: "Chat" },
 ];
 
 const menuState = ref<string | null>(null);

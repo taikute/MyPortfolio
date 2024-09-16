@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "./components/Home.vue";
-import CV from "./components/CV.vue";
-import Projects from "./components/Projects.vue";
-import Credit from "./components/Credit.vue";
+import Home from "./views/Home.vue";
+import CV from "./views/CV.vue";
+import Projects from "./views/Projects.vue";
+import Chat from "./views/Chat.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,9 +22,9 @@ const router = createRouter({
       meta: { title: "Projects" },
     },
     {
-      path: "/credit",
-      component: Credit,
-      meta: { title: "Credit" },
+      path: "/chat",
+      component: Chat,
+      meta: { title: "Chat" },
     },
   ],
 });
