@@ -4,13 +4,6 @@ import Nav from "./components/Nav.vue";
 
 <template>
   <Nav></Nav>
-  <div class="body-container">
-    <RouterView></RouterView>
-  </div>
+  <!-- Navbar height: 80px -->
+  <RouterView></RouterView>
 </template>
-
-<style>
-.body-container {
-  margin: 0px 8px;
-}
-</style>

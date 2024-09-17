@@ -1,28 +1,31 @@
 <template>
-  <nav class="nav-bar">
-    <RouterLink class="nav-header" to="/">Anh Tài</RouterLink>
+  <div class="nav-bar-container">
+    <nav class="nav-bar">
+      <RouterLink class="nav-bar-header" to="/">Anh Tài</RouterLink>
 
-    <div class="menu" :class="menuState">
-      <div class="menu-btn" @click="changeMenu">
-        <div class="bar1"></div>
-        <div class="bar2"></div>
-        <div class="bar3"></div>
+      <div class="menu" :class="menuState">
+        <div class="menu-btn" @click="changeMenu">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+
+        <div class="menu-items" @click="closeMenu">
+          <RouterLink v-for="item in navItems" :to="item.path">{{
+            item.name
+          }}</RouterLink>
+        </div>
       </div>
 
-      <div class="menu-items" @click="closeMenu">
+      <div class="nav-bar-items">
         <RouterLink v-for="item in navItems" :to="item.path">{{
           item.name
         }}</RouterLink>
       </div>
-    </div>
+    </nav>
 
-    <div class="nav-items">
-      <RouterLink v-for="item in navItems" :to="item.path">{{
-        item.name
-      }}</RouterLink>
-    </div>
-  </nav>
-  <div class="divider"></div>
+    <div class="divider"></div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -51,6 +54,10 @@ function closeMenu() {
 </script>
 
 <style scoped>
+.nav-bar-container {
+  padding-bottom: 28px;
+}
+
 .nav-bar {
   margin: 0 8px;
   height: 50px;
@@ -59,18 +66,18 @@ function closeMenu() {
   align-items: center;
 }
 
-.nav-header {
+.nav-bar-header {
   font-size: 25px;
   font-weight: 500;
   padding: 4px 8px;
   border-radius: 8px;
 }
 
-.nav-items {
+.nav-bar-items {
   display: none;
 }
 
-.nav-items a {
+.nav-bar-items a {
   font-size: 15px;
   padding: 8px;
   margin: 0px 4px;
@@ -110,6 +117,7 @@ function closeMenu() {
 }
 
 .menu-items {
+  z-index: 999;
   display: none;
   padding: 8px 8px;
   min-width: 300px;
@@ -133,8 +141,13 @@ function closeMenu() {
     display: none;
   }
 
-  .nav-items {
+  .nav-bar-items {
     display: inline;
   }
+}
+
+.divider {
+  height: 2px;
+  background-color: white;
 }
 </style>

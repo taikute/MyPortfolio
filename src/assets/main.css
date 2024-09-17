@@ -5,10 +5,14 @@ html {
 }
 
 body {
-  font-size: 13px;
+  margin: 0;
+}
+
+body,
+input {
+  font-size: 15px;
   line-height: 1;
   font-family: "Roboto", system-ui;
-  margin: 0;
 }
 
 a {
@@ -22,11 +26,8 @@ a {
   padding: 5px 10px;
   border-width: 2px;
   border-style: solid;
-  border-radius: 4px;
-}
-
-.divider {
-  margin-bottom: 30px;
-  height: 2px;
-  background-color: white;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
