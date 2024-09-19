@@ -1,5 +1,11 @@
 @import "./theme.css";
 
+html,
+body,
+#app {
+  height: 100%;
+}
+
 html {
   padding: 0;
 }

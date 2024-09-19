@@ -6,15 +6,17 @@
     <div v-if="isLarge || !recipientSelected" class="left-container">
       <div style="text-align: center; font-size: 30px">Chat with stranger</div>
       <div class="user-list-container">
+        <div v-if="!users">Loading...</div>
         <div
-          v-for="[id, connected] in userState"
+          v-else
+          v-for="[id, data] in Object.entries(users)"
           class="user-container"
           @click="onUserSelected(id)"
         >
           <div class="username-container">
             {{ id }}<span v-if="userId == id"> (yourself)</span>
           </div>
-          <div v-if="connected">Online</div>
+          <div v-if="data.connected">Online</div>
           <div v-else>Offline</div>
         </div>
       </div>
@@ -23,8 +25,8 @@
       <div v-if="recipientSelected" class="inbox-container">
         <div class="info-container">{{ recipientSelected }}</div>
         <div class="message-list-container">
-          <div v-for="message in messageList" class="message-container">
-            <span> {{ message }}</span>
+          <div v-for="message in messages" class="message-container">
+            <span>({{ message.senderId }}): {{ message.content }}</span>
           </div>
         </div>
         <div class="input-container">
@@ -43,20 +45,22 @@
 </template>
 
 <script setup lang="ts">
-import socket, { Message } from "@/socket";
+import socket, { Message, type UserMap } from "@/socket";
 import { onUnmounted, ref } from "vue";
 
 const isLarge = ref(window.innerWidth >= 768);
 window.addEventListener("resize", () => {
   isLarge.value = window.innerWidth >= 768;
+  console.log(innerWidth);
+  console.log();
 });
 
-const userId = ref("");
+const userId = ref<string>();
 const userInput = ref("");
-const recipientSelected = ref("");
+const recipientSelected = ref<string>();
 const messageInput = ref("");
-const userState = ref<Map<string, boolean>>(new Map());
-const messageList = ref<Message[]>([]);
+const users = ref<UserMap>();
+const messages = ref<Message[]>();
 
 const storageId = localStorage.getItem("userId");
 if (storageId) {
@@ -70,12 +74,23 @@ function onUserSelected(_userId: string) {
 }
 
 function onSend() {
+  if (!userId.value) {
+    alert("Error, page reloading!");
+    window.location.reload();
+    return;
+  }
   if (messageInput.value && recipientSelected.value) {
     socket.emit("private_message", recipientSelected.value, messageInput.value);
-    messageList.value = [
-      ...messageList.value,
-      new Message(userId.value, recipientSelected.value, messageInput.value),
-    ];
+    const message = new Message(
+      userId.value,
+      recipientSelected.value,
+      messageInput.value
+    );
+    if (messages.value) {
+      messages.value = [message, ...messages.value];
+    } else {
+      messages.value = [message];
+    }
     messageInput.value = "";
   }
 }
@@ -88,26 +103,33 @@ function usernameEnter() {
 }
 
 socket.on("connect_error", (err) => {
-  console.log(err.message);
-  userId.value = "";
+  userId.value = undefined;
   localStorage.removeItem("userId");
+  alert("Error, page reloading!");
+  window.location.reload();
 });
 
 //Connected
 socket.on("data", (_userState, _messageList) => {
-  userState.value = new Map(_userState);
-  messageList.value = _messageList;
+  users.value = _userState;
+  messages.value = _messageList;
 });
 
 socket.on("user_connected", (id) => {
-  userState.value.set(id, true);
+  if (!users.value) {
+    alert("Error, page reloading!");
+    window.location.reload();
+    return;
+  }
+  users.value[id];
 });
 
-socket.on("private_message", ({ senderId, recipientId, content }) => {
-  messageList.value = [
-    ...messageList.value,
-    new Message(senderId, recipientId, content),
-  ];
+socket.on("private_message", (message) => {
+  if (messages.value) {
+    messages.value = [message, ...messages.value];
+  } else {
+    messages.value = [message];
+  }
 });
 
 onUnmounted(() => {
@@ -116,6 +138,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.container,
+.inbox-container {
+  height: 100%;
+}
+
 .user-container {
   cursor: pointer;
   margin: 10px;
@@ -132,7 +159,6 @@ onUnmounted(() => {
 
 .inbox-container {
   margin: 0 8px;
-  height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
 }
