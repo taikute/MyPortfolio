@@ -7,42 +7,33 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
 );
 
 socket.onAny((event, ...args) => {
-  console.log(event, args);
+  console.log(event, ...args);
 });
 
 export default socket;
 
 // Types
 interface ServerToClientEvents {
+  user: (user: User) => void;
+  pair: (rcptname: string) => void;
+  unpair: () => void;
   private_message: (message: Message) => void;
-  data: (users: UserMap, messages: Message[]) => void;
-  user_connected: (id: string) => void;
-  user_disconnected: (id: string) => void;
 }
 
 interface ClientToServerEvents {
-  private_message: (recipientId: string, content: string) => void;
+  private_message: (content: string) => void;
+  leave: () => void;
+  delete: () => void;
 }
 
-export interface UserMap {
-  [id: string]: {
-    connected: boolean;
-    lastConnected?: number;
-  };
-}
-
-export class Message {
-  senderId: string;
-  recipientId: string;
+export interface Message {
+  self: boolean;
   content: string;
-  timestamp: number;
-  isRead: boolean;
+}
 
-  constructor(senderId: string, recipientId: string, content: string) {
-    this.senderId = senderId;
-    this.recipientId = recipientId;
-    this.content = content;
-    this.timestamp = Date.now();
-    this.isRead = false;
-  }
+export interface User {
+  id: string;
+  name: string;
+  messages: Message[];
+  rcptName?: string;
 }

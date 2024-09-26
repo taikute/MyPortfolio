@@ -55,6 +55,8 @@ function closeMenu() {
 
 <style scoped>
 .nav-bar-container {
+  display: flex;
+  flex-direction: column;
   padding-bottom: 28px;
 }
 

@@ -3,22 +3,15 @@
 html,
 body,
 #app {
-  height: 100%;
-}
-
-html {
-  padding: 0;
-}
-
-body {
   margin: 0;
-}
-
-body,
-input {
   font-size: 15px;
   line-height: 1;
   font-family: "Roboto", system-ui;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
 }
 
 a {

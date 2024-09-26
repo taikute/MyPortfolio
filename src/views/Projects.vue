@@ -1,6 +1,6 @@
 <template>
   <div class="header">My featured projects</div>
-  <div class="container">
+  <div class="projects-container">
     <div v-for="item in items" class="item-container">
       <div class="name">{{ item.projectName }}</div>
       <div class="timeline">{{ item.timeline }}</div>
@@ -68,7 +68,7 @@ const items: Item[] = [
   font-weight: 500;
 }
 
-.container {
+.projects-container {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;

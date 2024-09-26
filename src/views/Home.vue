@@ -1,29 +1,18 @@
 <template>
-  <div class="container">
-    <div class="left">
+  <div class="home-container">
+    <div class="left-container">
       <img class="avata" alt="avata" src="../assets/avata.jpg" />
     </div>
-    <div class="right">
+    <div class="right-container">
       <div class="text">
         <div class="small-text">Hello, I'm Nguyễn Anh Tài,</div>
         <div class="big-text">Full stack Developer</div>
       </div>
       <div class="contact">
-        <i class="fa-solid fa-phone" @click="redirect('tel:0389653102')"></i>
-        <i
-          class="fa-solid fa-envelope"
-          @click="redirect('mailto:anhtai05102002@gmail.com')"
-        ></i>
-        <i
-          class="fa-brands fa-github"
-          @click="newTab('https://github.com/taikute')"
-        ></i>
-        <i
-          class="fa-brands fa-facebook"
-          @click="
-            newTab('https://www.facebook.com/profile.php?id=100034716938533')
-          "
-        ></i>
+        <i class="fa-solid fa-phone" @click="redirect(phoneLink)"></i>
+        <i class="fa-solid fa-envelope" @click="redirect(emailLink)"></i>
+        <i class="fa-brands fa-github" @click="newTab(githubLink)"></i>
+        <i class="fa-brands fa-facebook" @click="newTab(fbLink)"></i>
       </div>
       <RouterLink to="/cv" class="cv-btn btn btn-primary">My CV</RouterLink>
     </div>
@@ -31,6 +20,10 @@
 </template>
 
 <script setup lang="ts">
+const phoneLink = "tel:0389653102";
+const emailLink = "mailto:anhtai05102002@gmail.com";
+const githubLink = "https://github.com/taikute";
+const fbLink = "https://www.facebook.com/profile.php?id=100034716938533";
 function newTab(url: string) {
   window.open(url, "_blank");
 }
@@ -40,8 +33,17 @@ function redirect(url: string) {
 </script>
 
 <style scoped>
-.left {
-  text-align: center;
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .avata {
@@ -49,11 +51,11 @@ function redirect(url: string) {
   height: 250px;
 }
 
-.right {
+.right-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px 20px 0 20px;
+  margin: 20px;
 }
 
 .small-text {
@@ -92,21 +94,20 @@ function redirect(url: string) {
 }
 
 @media (min-width: 768px) {
-  .left {
+  .left-container {
     width: 40%;
   }
 
-  .right {
+  .right-container {
     margin: 0;
   }
 
-  .container {
-    display: flex;
-    align-items: center;
+  .home-container {
+    flex-direction: row;
   }
 
   @media (min-width: 1024px) {
-    .left {
+    .left-container {
       width: 50%;
     }
 

@@ -1,208 +1,242 @@
 <template>
-  <div v-if="!userId">
-    <input v-model="userInput" @keyup.enter="usernameEnter" />
-  </div>
-  <div v-else class="container">
-    <div v-if="isLarge || !recipientSelected" class="left-container">
-      <div style="text-align: center; font-size: 30px">Chat with stranger</div>
-      <div class="user-list-container">
-        <div v-if="!users">Loading...</div>
-        <div
-          v-else
-          v-for="[id, data] in Object.entries(users)"
-          class="user-container"
-          @click="onUserSelected(id)"
-        >
-          <div class="username-container">
-            {{ id }}<span v-if="userId == id"> (yourself)</span>
-          </div>
-          <div v-if="data.connected">Online</div>
-          <div v-else>Offline</div>
-        </div>
+  <div class="chat-page">
+    <div v-if="!userRef" class="welcome">
+      <div class="head-text">Random chat</div>
+      <div class="input-bar">
+        <input v-model="nameRef" placeholder="Enter name" @keyup.enter="handleNameEnter" />
+        <a class="btn btn-primary" @click="handleNameEnter">Chat</a>
       </div>
+      <div class="privacy">*note: after click "chat" button, you will connect with random recipient!</div>
     </div>
-    <div class="right-container">
-      <div v-if="recipientSelected" class="inbox-container">
-        <div class="info-container">{{ recipientSelected }}</div>
-        <div class="message-list-container">
-          <div v-for="message in messages" class="message-container">
-            <span>({{ message.senderId }}): {{ message.content }}</span>
-          </div>
+    <div v-else class="auth">
+      <div v-if="!userRef.rcptName" class="finding">
+        <div class="head-text">Finding...</div>
+      </div>
+      <div v-else class="found">
+        <div class="info-bar">
+          <div class="rcpt-name">Chat with {{ userRef.rcptName }}</div>
+          <a class="btn btn-primary" @click="handleLeave">New</a>
+          <a class="btn btn-primary" @click="handleDelete">Reset</a>
         </div>
-        <div class="input-container">
-          <input
-            v-model="messageInput"
-            class="chat-input"
-            placeholder="Type some thing ..."
-            @keyup.enter="onSend"
-          />
-          <a class="send-btn btn btn-primary" @click="onSend">Send</a>
+        <div class="message-list">
+          <div v-for="msg in userRef.messages" class="item" :class="msg.self ? 'right' : 'left'">{{ msg.content }}</div>
+        </div>
+        <div class="input-bar">
+          <input v-model="msgRef" @keyup.enter="handleSend" placeholder="Aa" />
+          <a class="btn btn-primary" @click="handleSend">Send</a>
         </div>
       </div>
-      <div v-else-if="isLarge">Chosse user to chat</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import socket, { Message, type UserMap } from "@/socket";
-import { onUnmounted, ref } from "vue";
+import socket, { type User } from "@/socket";
+import { ref } from "vue";
 
-const isLarge = ref(window.innerWidth >= 768);
-window.addEventListener("resize", () => {
-  isLarge.value = window.innerWidth >= 768;
-  console.log(innerWidth);
-  console.log();
-});
+const nameRef = ref("");
+const userRef = ref<User>();
+const msgRef = ref("");
 
-const userId = ref<string>();
-const userInput = ref("");
-const recipientSelected = ref<string>();
-const messageInput = ref("");
-const users = ref<UserMap>();
-const messages = ref<Message[]>();
-
-const storageId = localStorage.getItem("userId");
-if (storageId) {
-  socket.auth = { storageId };
-  socket.connect();
-  userId.value = storageId;
+{
+  const id = localStorage.getItem("id");
+  if (id) {
+    socket.auth = { id };
+    socket.connect();
+  }
 }
 
-function onUserSelected(_userId: string) {
-  recipientSelected.value = _userId;
-}
-
-function onSend() {
-  if (!userId.value) {
-    alert("Error, page reloading!");
+function handleNameEnter() {
+  if (socket.connected) {
     window.location.reload();
     return;
   }
-  if (messageInput.value && recipientSelected.value) {
-    socket.emit("private_message", recipientSelected.value, messageInput.value);
-    const message = new Message(
-      userId.value,
-      recipientSelected.value,
-      messageInput.value
-    );
-    if (messages.value) {
-      messages.value = [message, ...messages.value];
-    } else {
-      messages.value = [message];
-    }
-    messageInput.value = "";
+  const id = localStorage.getItem("id");
+  if (id) {
+    socket.auth = { id };
+  } else {
+    socket.auth = { name: nameRef.value };
   }
+  nameRef.value = "";
+  socket.connect();
 }
 
-function usernameEnter() {
-  socket.auth = { userId: userInput.value };
-  socket.connect();
-  userId.value = userInput.value;
-  localStorage.setItem("userId", userId.value);
+function handleLeave() {
+  socket.emit("leave");
 }
+
+function handleDelete() {
+  localStorage.removeItem("id");
+  userRef.value = undefined;
+  socket.emit("delete");
+}
+
+function handleSend() {
+  if (!msgRef.value) {
+    return;
+  }
+  socket.emit("private_message", msgRef.value);
+  msgRef.value = "";
+}
+
+socket.on("user", (user) => {
+  localStorage.setItem("id", user.id);
+  userRef.value = user;
+});
+
+socket.on("pair", (rcptname) => {
+  const user = userRef.value;
+  if (user) {
+    user.rcptName = rcptname;
+  }
+});
+
+socket.on("private_message", (msg) => {
+  if (userRef.value) {
+    userRef.value.messages.unshift(msg);
+  }
+});
+
+socket.on("unpair", () => {
+  const user = userRef.value;
+  if (user) {
+    user.rcptName = undefined;
+    user.messages = [];
+  }
+});
 
 socket.on("connect_error", (err) => {
-  userId.value = undefined;
-  localStorage.removeItem("userId");
-  alert("Error, page reloading!");
+  localStorage.removeItem("id");
   window.location.reload();
-});
-
-//Connected
-socket.on("data", (_userState, _messageList) => {
-  users.value = _userState;
-  messages.value = _messageList;
-});
-
-socket.on("user_connected", (id) => {
-  if (!users.value) {
-    alert("Error, page reloading!");
-    window.location.reload();
-    return;
-  }
-  users.value[id];
-});
-
-socket.on("private_message", (message) => {
-  if (messages.value) {
-    messages.value = [message, ...messages.value];
-  } else {
-    messages.value = [message];
-  }
-});
-
-onUnmounted(() => {
-  socket.disconnect();
+  console.log("Connect error: " + err.message);
 });
 </script>
 
 <style scoped>
-.container,
-.inbox-container {
+.chat-page {
   height: 100%;
 }
 
-.user-container {
-  cursor: pointer;
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 50vmin;
-  background-color: darkolivegreen;
-}
-
-.username-container {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.inbox-container {
-  margin: 0 8px;
+.welcome {
+  height: 100%;
   display: flex;
+  justify-content: start;
+  align-items: center;
   flex-direction: column;
 }
 
-.info-container {
-  height: 50px;
-  background-color: darkolivegreen;
+.welcome .head-text {
+  font-size: 40px;
+  font-weight: 600;
+  margin: 50px 0;
 }
 
-.message-list-container {
+.welcome .input-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome .input-bar input {
+  width: 50%;
+  max-width: 350px;
+  font-size: 20px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 25px;
+}
+
+.welcome .input-bar a {
+  margin-left: 10px;
+  font-size: 25px;
+}
+
+.welcome .privacy {
+  font-style: italic;
+  margin: 10px 10px 0;
+}
+
+.auth {
+  height: 100%;
+}
+
+.auth .finding {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth .finding .head-text {
+  font-size: 40px;
+}
+
+.auth .found {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth .found .info-bar {
+  background-color: darkgoldenrod;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.auth .found .info-bar .rcpt-name {
+  font-size: 18px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth .found .message-list {
+  width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column-reverse;
-  overflow-y: auto;
 }
 
-.message-container {
-  margin: 5px;
+.auth .found .message-list .item {
+  margin: 2px;
 }
 
-.input-container {
-  height: 40px;
-  display: flex;
-  padding: 10px 0;
-  background-color: darkslategrey;
+.auth .found .message-list .left {
+  text-align: left;
+  margin-left: 10px;
 }
 
-.chat-input {
-  border-radius: 25px;
-  padding: 0 10px;
+.auth .found .message-list .right {
+  text-align: right;
   margin-right: 10px;
-  flex: 1;
 }
 
-@media (min-width: 768px) {
-  .container {
-    display: flex;
-  }
-  .left-container {
-    width: 40%;
-    max-width: 400px;
-  }
-  .right-container {
-    flex: 1;
+.auth .found .input-bar {
+  width: 100%;
+  height: 40px;
+  padding: 10px 0;
+  display: flex;
+}
+
+.auth .found .input-bar input {
+  flex: 1;
+  padding: 0 10px;
+  border-radius: 20px;
+}
+
+.auth .found .input-bar a {
+  margin-left: 10px;
+}
+
+@media (min-width: 600px) {
+  .auth .found {
+    margin: 0 20%;
   }
 }
 </style>

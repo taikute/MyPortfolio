@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="cv-container">
     <a :href="cvUrl" class="btn btn-primary">Download my CV</a>
     <img src="../assets/nguyenanhtai_cv.jpg" alt="cv" />
   </div>
@@ -11,7 +11,8 @@ const cvUrl: string =
 </script>
 
 <style scoped>
-.container {
+.cv-container {
+  margin: 0 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,13 +21,12 @@ const cvUrl: string =
 a {
   font-size: 20px;
   font-weight: 500;
-  margin-top: 20px;
   padding: 10px 20px;
   border-radius: 50ch;
 }
 
 img {
-  margin-top: 20px;
+  margin: 30px 0px;
   max-width: 800px;
   width: 100%;
 }

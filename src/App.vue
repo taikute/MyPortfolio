@@ -3,11 +3,14 @@ import Nav from "./components/Nav.vue";
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%">
-    <Nav></Nav>
-    <!-- Navbar height: 80px -->
-    <div style="flex: 1">
-      <RouterView></RouterView>
-    </div>
+  <Nav></Nav>
+  <div id="main">
+    <RouterView></RouterView>
   </div>
 </template>
+
+<style scoped>
+#main {
+  flex: 1;
+}
+</style>
