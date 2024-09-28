@@ -228,7 +228,7 @@ socket.on("connect_error", (err) => {
 
 .auth .found .input-bar {
   height: 40px;
-  padding: 10px 0;
+  padding: 10px 10px;
   display: flex;
 }
 
