@@ -11,16 +11,12 @@
         </div>
 
         <div class="menu-items" @click="closeMenu">
-          <RouterLink v-for="item in navItems" :to="item.path">{{
-            item.name
-          }}</RouterLink>
+          <RouterLink v-for="item in navItems" :to="item.path">{{ item.name }}</RouterLink>
         </div>
       </div>
 
       <div class="nav-bar-items">
-        <RouterLink v-for="item in navItems" :to="item.path">{{
-          item.name
-        }}</RouterLink>
+        <RouterLink v-for="item in navItems" :to="item.path">{{ item.name }}</RouterLink>
       </div>
     </nav>
 
@@ -94,7 +90,7 @@ function closeMenu() {
 .menu-btn div {
   width: 30px;
   height: 4px;
-  background-color: white;
+  background-color: var(--color-text);
   transition: 0.2s;
 }
 
@@ -127,7 +123,7 @@ function closeMenu() {
   position: absolute;
   right: 8px;
   top: 60px;
-  background-color: black;
+  background-color: var(--color-primary);
   border: 2px solid;
   border-radius: 10px;
 }
@@ -148,8 +144,5 @@ function closeMenu() {
   }
 }
 
-.divider {
-  height: 2px;
-  background-color: white;
-}
+
 </style>

@@ -18,8 +18,9 @@
           <a class="btn btn-primary" @click="handleLeave">New</a>
           <a class="btn btn-primary" @click="handleDelete">Reset</a>
         </div>
+        <div class="divider"></div>
         <div class="message-list">
-          <div v-for="msg in userRef.messages" class="item" :class="msg.self ? 'right' : 'left'">{{ msg.content }}</div>
+          <p v-for="msg in userRef.messages" class="item" :class="msg.self ? 'right' : 'left'">{{ msg.content }}</p>
         </div>
         <div class="input-bar">
           <input v-model="msgRef" @keyup.enter="handleSend" placeholder="Aa" />
@@ -147,7 +148,6 @@ socket.on("connect_error", (err) => {
   max-width: 350px;
   font-size: 20px;
   padding: 8px 12px;
-  border: none;
   border-radius: 25px;
 }
 
@@ -180,12 +180,9 @@ socket.on("connect_error", (err) => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .auth .found .info-bar {
-  background-color: darkgoldenrod;
-  width: 100%;
   height: 40px;
   display: flex;
   align-items: center;
@@ -201,7 +198,6 @@ socket.on("connect_error", (err) => {
 }
 
 .auth .found .message-list {
-  width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column-reverse;
@@ -222,7 +218,6 @@ socket.on("connect_error", (err) => {
 }
 
 .auth .found .input-bar {
-  width: 100%;
   height: 40px;
   padding: 10px 0;
   display: flex;

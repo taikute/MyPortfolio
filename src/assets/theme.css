@@ -1,68 +1,44 @@
-/* Base Color */
-/* :root {
-	--light-background-primary: #;
-
-	--dark-background-secondary: #181818;
-	--dark-text-link: #4493F8;
-	--dark-button-secondary: #252C36;
-	--dark-button-hover-secondary: #262C36;
-	--dark-button-active-secondary: #2B313D;
-} */
-
-/* :root {} */
+/* --color-muted: #9097a0; */
+:root {
+  --color-primary: #f0f6fc;
+  --color-text: #010409;
+  --color-hover: #cecfd1;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background-primary: #010409;
-    --color-text-primary: #f0f6fc;
-    --color-text-muted: #9097a0;
-    --color-text-hover: #15191f;
-    --color-button-primary: #1f8635;
-    --color-on-button: white;
-    --color-on-button-muted: #9198a1;
-    --color-button-hover-primary: #29903b;
-    --color-button-active-primary: #105823;
+    --color-primary: #010409;
+    --color-text: #f0f6fc;
+    --color-hover: #15191f;
   }
 }
 
-body {
-  background-color: var(--color-background-primary);
-  color: var(--color-text-primary);
+body,
+a {
+  background-color: var(--color-primary);
+  color: var(--color-text);
 }
 
-.nav-bar {
+a:hover {
+  background-color: var(--color-hover);
 }
 
-.nav-bar a {
-  color: var(--color-text-primary);
+input {
+  color: var(--color-text);
+  background-color: var(--color-hover);
 }
 
-.nav-bar a:hover {
-  background-color: var(--color-text-hover);
-}
-
-.nav-bar .menu-items {
-  background-color: var(--color-background-primary);
+.divider {
+  height: 2px;
+  background-color: var(--color-text);
 }
 
 .btn {
-  border-color: var(--color-button-hover-primary);
+  color: #f0f6fc;
+  background-color: #1f8635;
+  border-color: #29903b;
 }
 
-.btn:active {
-  border-color: transparent;
-}
-
-.btn-primary {
-  color: var(--color-on-button);
-  background-color: var(--color-button-primary);
-}
-
-.btn-primary:hover {
-  background-color: var(--color-button-hover-primary);
-}
-
-.btn-primary:active {
-  color: var(--color-text-muted);
-  background-color: var(--color-button-active-primary);
+.btn:hover {
+  background-color: #29903b;
 }

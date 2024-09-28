@@ -82,7 +82,7 @@ function redirect(url: string) {
 }
 
 .contact i:hover {
-  background-color: var(--color-text-hover);
+  background-color: var(--color-hover);
 }
 
 .cv-btn {

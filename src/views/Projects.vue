@@ -1,7 +1,7 @@
 <template>
   <div class="header">My featured projects</div>
   <div class="projects-container">
-    <div v-for="item in items" class="item-container">
+    <div v-for="item in items" class="item-container" @click="newTab(item.githubLink)">
       <div class="name">{{ item.projectName }}</div>
       <div class="info">Timeline: {{ item.timeline }}</div>
       <div class="info">Platform: {{ item.platform }}</div>
@@ -17,6 +17,10 @@ import katinatUrl from "@/assets/projects/katinat.jpg";
 import spymouseUrl from "@/assets/projects/spymouse.png";
 import libraryUrl from "@/assets/projects/library.jpg";
 
+function newTab(url: string) {
+  window.open(url, "_blank");
+}
+
 interface Item {
   projectName: string;
   iconClass: string;
@@ -24,6 +28,7 @@ interface Item {
   timeline: string;
   platform: string;
   framework: string;
+  githubLink: string;
 }
 
 const items: Item[] = [
@@ -34,6 +39,7 @@ const items: Item[] = [
     timeline: "09/2024 - now",
     platform: "Web",
     framework: "Vue",
+    githubLink: "https://github.com/taikute/MyPortfolio",
   },
   {
     projectName: "Katinat",
@@ -42,6 +48,7 @@ const items: Item[] = [
     timeline: "04/2024 - 05/2024",
     platform: "Android",
     framework: "Flutter",
+    githubLink: "https://github.com/taikute/Katinat",
   },
   {
     projectName: "Spy Mouse",
@@ -50,6 +57,7 @@ const items: Item[] = [
     timeline: "10/2023 - 12/2023",
     platform: "Android",
     framework: "LibGDX",
+    githubLink: "https://github.com/taikute/SpyMouse",
   },
   {
     projectName: "Ice Library",
@@ -58,6 +66,7 @@ const items: Item[] = [
     timeline: "04/2023 - 06/2023",
     platform: "Web",
     framework: ".NET Core",
+    githubLink: "https://github.com/taikute/Ice-Web-Library",
   },
 ];
 </script>
@@ -76,10 +85,11 @@ const items: Item[] = [
 }
 
 .item-container {
+  cursor: pointer;
   margin-top: 30px;
   padding: 20px;
   border-radius: 20px;
-  background-color: gray;
+  background-color: var(--color-hover);
   width: 80%;
   max-width: 400px;
   aspect-ratio: 1;
