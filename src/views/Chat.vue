@@ -90,9 +90,8 @@ socket.on("user", (user) => {
 });
 
 socket.on("pair", (rcptname) => {
-  const user = userRef.value;
-  if (user) {
-    user.rcptName = rcptname;
+  if (userRef.value) {
+    userRef.value.rcptName = rcptname;
   }
 });
 
@@ -103,16 +102,15 @@ socket.on("private_message", (msg) => {
 });
 
 socket.on("unpair", () => {
-  const user = userRef.value;
-  if (user) {
-    user.rcptName = undefined;
-    user.messages = [];
+  if (userRef.value) {
+    userRef.value.rcptName = undefined;
+    userRef.value.messages = [];
   }
 });
 
 socket.on("connect_error", (err) => {
   localStorage.removeItem("id");
-  window.location.reload();
+  userRef.value = undefined;
   console.log("Connect error: " + err.message);
 });
 </script>
