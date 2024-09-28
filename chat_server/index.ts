@@ -11,20 +11,39 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
 
 const users: UserMap = {};
 
-function findRcpt(curId: string): string | undefined {
-  if (!(curId in users)) {
-    error("Find cancel: users not exists!");
-    return undefined;
+function suffle(arr: any[]) {
+  let curIndex = arr.length;
+  while (curIndex != 0) {
+    let randomIndex = Math.floor(Math.random() * curIndex);
+    curIndex--;
+
+    [arr[curIndex], arr[randomIndex]] = [arr[randomIndex], arr[curIndex]];
   }
-  const userArr = Object.entries(users).filter(([id, data]) => curId != id && !data.rcptId && !data.deleteTimeout);
-  if (userArr.length == 0) {
-    log("Cant find any recipient!");
-    return undefined;
-  }
-  const randomIndex = Math.floor(Math.random() * userArr.length);
-  console.log("Found recipient: " + userArr[randomIndex][1].name);
-  return userArr[randomIndex][0];
 }
+
+setInterval(() => {
+  const userArr = Object.entries(users).filter(([id, data]) => !data.rcptId && !data.deleteTimeout);
+  if (userArr.length < 2) {
+    return;
+  }
+  suffle(userArr);
+  if (userArr.length % 2 == 1) {
+    userArr.pop();
+  }
+  while (userArr.length > 0) {
+    const id1 = userArr.pop()?.[0];
+    const id2 = userArr.pop()?.[0];
+    if (!id1 || !id2 || !(id1 in users) || !(id2 in users)) {
+      log("Pair fail!");
+      return;
+    }
+    users[id1].rcptId = id2;
+    users[id2].rcptId = id1;
+    io.to(id1).emit("pair", users[id2].name);
+    io.to(id2).emit("pair", users[id1].name);
+    log("Paired: " + users[id1].name + " with " + users[id2].name);
+  }
+}, 3000);
 
 // Middlewares
 io.use((socket, next) => {
@@ -77,27 +96,14 @@ io.on("connection", (socket) => {
     io.to(curId).emit("user", { id: curId, name: curName, rcptName, messages: dataRef.messages });
   }
 
-  const waitInterval = setInterval(() => {
-    if (dataRef.rcptId) {
-      if (dataRef.rcptId in users) {
-        return;
-      }
-      io.to(curId).emit("unpair");
-      return;
-    }
-    const rcptId = findRcpt(curId);
-    if (!rcptId) {
-      return;
-    }
-    pair(rcptId);
-  }, 3000);
-
   socket.on("private_message", (content) => {
     if (dataRef.rcptId) {
+      if (dataRef.rcptId in users) {
+        io.to(dataRef.rcptId).emit("private_message", { self: false, content });
+        users[dataRef.rcptId].messages.unshift({ self: false, content });
+      }
       io.to(curId).emit("private_message", { self: true, content });
-      io.to(dataRef.rcptId).emit("private_message", { self: false, content });
       dataRef.messages.unshift({ self: true, content });
-      users[dataRef.rcptId].messages.unshift({ self: false, content });
     } else {
       error("Send failed: no recipient id!");
     }
@@ -112,11 +118,13 @@ io.on("connection", (socket) => {
   socket.on("delete", () => {
     if (dataRef.rcptId) {
       io.to(dataRef.rcptId).emit("unpair");
-      users[dataRef.rcptId].rcptId = undefined;
-      users[dataRef.rcptId].messages = [];
+      if (dataRef.rcptId in users) {
+        users[dataRef.rcptId].rcptId = undefined;
+        users[dataRef.rcptId].messages = [];
+      }
     }
-    delete users[curId];
     socket.disconnect(true);
+    delete users[curId];
     log("User with id: " + curId + " was deleted!");
   });
 
@@ -134,20 +142,7 @@ io.on("connection", (socket) => {
         log(`User id ${curId} was deleted with error!`);
       }
     }
-    clearInterval(waitInterval);
   });
-
-  function pair(rcptId: string) {
-    if (rcptId in users) {
-      users[curId].rcptId = rcptId;
-      users[rcptId].rcptId = curId;
-      io.to(curId).emit("pair", users[rcptId].name);
-      io.to(rcptId).emit("pair", users[curId].name);
-      log("Paired: " + users[rcptId].name + " with " + users[curId].name);
-    } else {
-      error("Pair cancel!");
-    }
-  }
 
   function unpair(rcptId: string) {
     if (rcptId in users) {

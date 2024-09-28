@@ -11,6 +11,7 @@
     <div v-else class="auth">
       <div v-if="!userRef.rcptName" class="finding">
         <div class="head-text">Finding...</div>
+        <a class="btn btn-primary" @click="handleDelete">Back</a>
       </div>
       <div v-else class="found">
         <div class="info-bar">
@@ -23,7 +24,7 @@
           <p v-for="msg in userRef.messages" class="item" :class="msg.self ? 'right' : 'left'">{{ msg.content }}</p>
         </div>
         <div class="input-bar">
-          <input v-model="msgRef" @keyup.enter="handleSend" placeholder="Aa" />
+          <input id="message-input" v-model="msgRef" @keyup.enter="handleSend" placeholder="Aa" @blur="takeFocus()" />
           <a class="btn btn-primary" @click="handleSend">Send</a>
         </div>
       </div>
@@ -38,6 +39,9 @@ import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 const nameRef = ref("");
 const userRef = ref<User>();
 const msgRef = ref("");
+const focusRef = ref<boolean>(true);
+
+function takeFocus() {}
 
 onBeforeMount(() => {
   const id = localStorage.getItem("id");
@@ -82,6 +86,7 @@ function handleSend() {
   }
   socket.emit("private_message", msgRef.value);
   msgRef.value = "";
+  document.getElementById("message-input")?.focus();
 }
 
 socket.on("user", (user) => {
@@ -166,12 +171,18 @@ socket.on("connect_error", (err) => {
 .auth .finding {
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 .auth .finding .head-text {
   font-size: 40px;
+}
+
+.auth .finding a {
+  margin-top: 20px;
+  font-size: 20px;
 }
 
 .auth .found {
@@ -222,6 +233,7 @@ socket.on("connect_error", (err) => {
 }
 
 .auth .found .input-bar input {
+  font-size: 18px;
   flex: 1;
   padding: 0 10px;
   border-radius: 20px;
