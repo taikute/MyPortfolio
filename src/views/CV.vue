@@ -1,13 +1,12 @@
 <template>
   <div class="cv-container">
     <a :href="cvUrl" class="btn btn-primary">Download my CV</a>
-    <img src="../assets/nguyenanhtai_cv.jpg" alt="cv" />
+    <img src="../assets/cv.jpg" alt="cv" />
   </div>
 </template>
 
 <script setup lang="ts">
-const cvUrl: string =
-  "https://drive.google.com/uc?export=download&id=1DRf-FjqWmOdeP-UEAaTdsTKGESz4oBJ2";
+const cvUrl: string = "https://drive.google.com/uc?export=download&id=1J8g5PIyeBLGZI6byNaQKsr0tSOg1tz74";
 </script>
 
 <style scoped>
