@@ -2,4 +2,4 @@
 
 ## Framework: Vue 3 with Typescript
 
-## Chat: Using WebSocket
+## Chat Server: Using WebSocket
