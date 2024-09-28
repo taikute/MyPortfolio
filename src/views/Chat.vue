@@ -31,20 +31,24 @@
 </template>
 
 <script setup lang="ts">
-import socket, { type User } from "@/socket";
-import { ref } from "vue";
+import socket, { type User } from "@/chatSocket";
+import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 
 const nameRef = ref("");
 const userRef = ref<User>();
 const msgRef = ref("");
 
-{
+onBeforeMount(() => {
   const id = localStorage.getItem("id");
   if (id) {
     socket.auth = { id };
     socket.connect();
   }
-}
+});
+
+onBeforeUnmount(() => {
+  socket.disconnect();
+});
 
 function handleNameEnter() {
   if (socket.connected) {

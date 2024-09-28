@@ -1,3 +1,4 @@
+import { log, error } from "console";
 import { randomUUID } from "crypto";
 import { Server } from "socket.io";
 import { clearInterval, setInterval } from "timers";
@@ -12,15 +13,16 @@ const users: UserMap = {};
 
 function findRcpt(curId: string): string | undefined {
   if (!(curId in users)) {
-    console.error("Find cancel!");
+    error("Find cancel: users not exists!");
     return undefined;
   }
   const userArr = Object.entries(users).filter(([id, data]) => curId != id && !data.rcptId && !data.deleteTimeout);
   if (userArr.length == 0) {
+    log("Cant find any recipient!");
     return undefined;
   }
   const randomIndex = Math.floor(Math.random() * userArr.length);
-  console.log("Index: " + randomIndex);
+  console.log("Found recipient: " + userArr[randomIndex][1].name);
   return userArr[randomIndex][0];
 }
 
@@ -31,6 +33,7 @@ io.use((socket, next) => {
     if (id in users) {
       socket.data.id = id;
       socket.data.name = users[id].name;
+      log("Id auth: " + id);
       return next();
     }
     return next(new Error("Id was deleted!"));
@@ -41,6 +44,7 @@ io.use((socket, next) => {
   }
   socket.data.id = randomUUID();
   socket.data.name = name;
+  log("Name auth: " + name);
   next();
 });
 
@@ -75,6 +79,10 @@ io.on("connection", (socket) => {
 
   const waitInterval = setInterval(() => {
     if (dataRef.rcptId) {
+      if (dataRef.rcptId in users) {
+        return;
+      }
+      io.to(curId).emit("unpair");
       return;
     }
     const rcptId = findRcpt(curId);
@@ -91,7 +99,7 @@ io.on("connection", (socket) => {
       dataRef.messages.unshift({ self: true, content });
       users[dataRef.rcptId].messages.unshift({ self: false, content });
     } else {
-      console.error("No recipient id!");
+      error("Send failed: no recipient id!");
     }
   });
 
@@ -109,19 +117,21 @@ io.on("connection", (socket) => {
     }
     delete users[curId];
     socket.disconnect(true);
+    log("User with id: " + curId + " was deleted!");
   });
 
   socket.on("disconnect", (reason) => {
     if (curId in users) {
-      console.log(`${users[curId].name} is disconnected, reason: ${reason}`);
+      log(`${users[curId].name} is disconnected, reason: ${reason}`);
+      log(`Delete ${curId} after 10s!`);
       try {
         users[curId].deleteTimeout = setTimeout(() => {
-          console.log(`Delete: ${users[curId].name}!`);
           delete users[curId];
+          log(`User id ${curId} was deleted!`);
         }, 10000);
       } catch (err) {
-        console.log(`Delete with error: ${users[curId].name}!`);
         delete users[curId];
+        log(`User id ${curId} was deleted with error!`);
       }
     }
     clearInterval(waitInterval);
@@ -133,9 +143,9 @@ io.on("connection", (socket) => {
       users[rcptId].rcptId = curId;
       io.to(curId).emit("pair", users[rcptId].name);
       io.to(rcptId).emit("pair", users[curId].name);
-      console.log("Paired");
+      log("Paired: " + users[rcptId].name + " with " + users[curId].name);
     } else {
-      console.error("Pair cancel!");
+      error("Pair cancel!");
     }
   }
 
@@ -146,15 +156,15 @@ io.on("connection", (socket) => {
       users[curId].messages = [];
       users[rcptId].messages = [];
       io.to(curId).to(rcptId).emit("unpair");
-      console.log("Unpaired");
+      log("Unpaired: " + users[rcptId].name + " with " + users[curId].name);
     } else {
-      console.error("Unpair cancel!");
+      error("Unpair cancel!");
     }
   }
 });
 
-console.log("On http://localhost:3000");
-console.log("On https://ice-wss.glitch.me/");
+log("On http://localhost:3000");
+log("On https://ice-wss.glitch.me/");
 
 // Types
 interface ServerToClientEvents {
