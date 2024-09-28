@@ -247,5 +247,10 @@ socket.on("connect_error", (err) => {
   .auth .found {
     margin: 0 20%;
   }
+  .auth .found .input-bar {
+  height: 40px;
+  padding: 10px 0;
+  display: flex;
+}
 }
 </style>
