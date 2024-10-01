@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "start vite && start nodemon chat_server/index.ts",
-    "test": "",
+    "dev": "vite",
     "build": " run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
