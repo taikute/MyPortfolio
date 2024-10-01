@@ -1,7 +1,7 @@
 import { log, error } from "console";
 import { randomUUID } from "crypto";
 import { Server } from "socket.io";
-import { clearInterval, setInterval } from "timers";
+import { setInterval } from "timers";
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, {
   cors: {
