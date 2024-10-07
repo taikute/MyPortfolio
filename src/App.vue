@@ -1,16 +1,10 @@
-<script setup lang="ts">
-import Nav from "./components/Nav.vue";
-</script>
-
 <template>
   <Nav></Nav>
-  <div id="main">
+  <div style="flex: 1">
     <RouterView></RouterView>
   </div>
 </template>
 
-<style scoped>
-#main {
-  flex: 1;
-}
-</style>
+<script setup lang="ts">
+import Nav from "./components/Nav.vue";
+</script>
