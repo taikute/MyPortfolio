@@ -4,10 +4,13 @@ html,
 body,
 #app {
   height: 100%;
-  margin: 0;
   font-size: 15px;
   line-height: 1;
   font-family: "Roboto", system-ui;
+}
+
+body {
+  margin: 0;
 }
 
 #app {

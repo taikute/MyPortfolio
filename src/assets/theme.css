@@ -1,7 +1,7 @@
 :root {
   --color-primary: #f0f6fc;
   --color-text: #010409;
-  --color-hover: #cecfd1;
+  --color-hover: #bbc3d3;
 }
 
 @media (prefers-color-scheme: dark) {
