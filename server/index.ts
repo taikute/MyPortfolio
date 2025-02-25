@@ -3,7 +3,7 @@ import { randomUUID } from "crypto";
 import { Server } from "socket.io";
 import { setInterval } from "timers";
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>({
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, {
   cors: {
     origin: "*",
   },
@@ -162,7 +162,7 @@ io.on("connection", (socket) => {
 });
 
 log("On http://localhost:3000");
-log("On https://ice-wss.glitch.me/");
+log("On https://ice-wss.up.railway.app/");
 
 // Types
 interface ServerToClientEvents {
