@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon index.ts",
-    "build": "tsc index.ts"
+    "build": "tsc index.ts",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",

@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import socket, { type User } from "@/socket";
+import socket, { type User } from "@/services/socket";
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 
 const nameRef = ref("");

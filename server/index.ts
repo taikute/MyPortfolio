@@ -3,11 +3,14 @@ import { randomUUID } from "crypto";
 import { Server } from "socket.io";
 import { setInterval } from "timers";
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(3000, {
+const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>({
   cors: {
     origin: "*",
   },
 });
+
+// const chatNsp = io.of("/chat");
+// const hiveNsp = io.of("/hive");
 
 const users: UserMap = {};
 
