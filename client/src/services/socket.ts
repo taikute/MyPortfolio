@@ -2,7 +2,8 @@ import { io, Socket } from "socket.io-client";
 
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
   // "http://localhost:3000",
-  "https://ice-wss.glitch.me/",
+  // "https://ice-wss.glitch.me/",
+  "wss-production-6385.up.railway.app",
   { autoConnect: false }
 );
 
