@@ -9,8 +9,8 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
   },
 });
 
-// const chatNsp = io.of("/chat");
-// const hiveNsp = io.of("/hive");
+const chatNsp = io.of("/chat");
+const hiveNsp = io.of("/hive");
 
 const users: UserMap = {};
 
@@ -49,7 +49,7 @@ setInterval(() => {
 }, 3000);
 
 // Middlewares
-io.use((socket, next) => {
+chatNsp.use((socket, next) => {
   const id: string | undefined = socket.handshake.auth.id;
   if (id) {
     if (id in users) {
@@ -70,7 +70,7 @@ io.use((socket, next) => {
   next();
 });
 
-io.on("connection", (socket) => {
+chatNsp.on("connection", (socket) => {
   const curId = socket.data.id;
   socket.join(curId);
   const curName = socket.data.name;
