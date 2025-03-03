@@ -49,7 +49,7 @@ setInterval(() => {
 }, 3000);
 
 // Middlewares
-chatNsp.use((socket, next) => {
+io.of("/chat").use((socket, next) => {
   const id: string | undefined = socket.handshake.auth.id;
   if (id) {
     if (id in users) {
@@ -70,7 +70,7 @@ chatNsp.use((socket, next) => {
   next();
 });
 
-chatNsp.on("connection", (socket) => {
+io.of("/chat").on("connect", (socket) => {
   const curId = socket.data.id;
   socket.join(curId);
   const curName = socket.data.name;

@@ -1,18 +1,18 @@
 import { io, Socket } from "socket.io-client";
 
-const testUrl = "http://localhost:3000";
+const testUrl = "http://localhost:3000/";
 const baseUrl = "https://ice-wss.up.railway.app/";
 
-const chat: Socket<ChatS2C, ChatC2S> = io(baseUrl + "chat", { autoConnect: false });
-const hive: Socket<ChatS2C, ChatC2S> = io(baseUrl + "hive", { autoConnect: false });
+const chat: Socket<ChatS2C, ChatC2S> = io(testUrl + "chat", { autoConnect: false });
+// const hive: Socket<ChatS2C, ChatC2S> = io(baseUrl + "hive", { autoConnect: false });
 
 chat.onAny((event, ...args) => {
-  console.log("chat events: " + event, ...args);
+  console.log("chat: " + event, ...args);
 });
 
-hive.onAny((event, ...args) => {
-  console.log("hive events: " + event, ...args);
-});
+// hive.onAny((event, ...args) => {
+//   console.log("hive events: " + event, ...args);
+// });
 
 export default chat;
 
