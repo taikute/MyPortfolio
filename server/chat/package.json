@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "tsx watch index.ts",
     "build": "tsc index.ts",
-    "start": "node index.js",
-    "postinstall": "npm install --omit=dev"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
