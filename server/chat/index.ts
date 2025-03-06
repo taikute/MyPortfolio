@@ -9,9 +9,6 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEve
   },
 });
 
-const chatNsp = io.of("/chat");
-const hiveNsp = io.of("/hive");
-
 const users: UserMap = {};
 
 function suffle(arr: any[]) {
@@ -49,7 +46,7 @@ setInterval(() => {
 }, 3000);
 
 // Middlewares
-io.of("/chat").use((socket, next) => {
+io.use((socket, next) => {
   const id: string | undefined = socket.handshake.auth.id;
   if (id) {
     if (id in users) {
@@ -70,11 +67,11 @@ io.of("/chat").use((socket, next) => {
   next();
 });
 
-io.of("/chat").on("connect", (socket) => {
+io.on("connect", (socket) => {
   const curId = socket.data.id;
   socket.join(curId);
   const curName = socket.data.name;
-  console.log(`${curName} is connected! (Total: ${io.of("/").sockets.size})`);
+  console.log(`${curName} is connected (Total: ${io.of("/").sockets.size})`);
 
   // Create or restore data
   if (curId in users) {
@@ -97,6 +94,7 @@ io.of("/chat").on("connect", (socket) => {
       rcptName = users[dataRef.rcptId].name;
     }
     io.to(curId).emit("user", { id: curId, name: curName, rcptName, messages: dataRef.messages });
+    console.log("Data emitted");
   }
 
   socket.on("private_message", (content) => {
@@ -161,7 +159,7 @@ io.of("/chat").on("connect", (socket) => {
   }
 });
 
-log("On http://localhost:3000");
+log("On http://localhost:3000/");
 log("On https://ice-wss.up.railway.app/");
 
 // Types

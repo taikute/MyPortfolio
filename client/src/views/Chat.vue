@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import chat, { type User } from "@/services/socket";
+import socket, { type User } from "@/services/chatSocket";
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
 
 const nameRef = ref("");
@@ -45,74 +45,75 @@ function takeFocus() {}
 onBeforeMount(() => {
   const id = localStorage.getItem("id");
   if (id) {
-    chat.auth = { id };
-    chat.connect();
+    socket.auth = { id };
+    socket.connect();
   }
 });
 
 onBeforeUnmount(() => {
-  chat.disconnect();
+  socket.disconnect();
 });
 
 function handleNameEnter() {
-  if (chat.connected) {
+  if (socket.connected) {
     window.location.reload();
     return;
   }
   const id = localStorage.getItem("id");
   if (id) {
-    chat.auth = { id };
+    socket.auth = { id };
   } else {
-    chat.auth = { name: nameRef.value };
+    socket.auth = { name: nameRef.value };
   }
   nameRef.value = "";
-  chat.connect();
+  socket.connect();
 }
 
 function handleLeave() {
-  chat.emit("leave");
+  socket.emit("leave");
 }
 
 function handleDelete() {
   localStorage.removeItem("id");
   userRef.value = undefined;
-  chat.emit("delete");
+  socket.emit("delete");
 }
 
 function handleSend() {
   if (!msgRef.value) {
     return;
   }
-  chat.emit("private_message", msgRef.value);
+  socket.emit("private_message", msgRef.value);
   msgRef.value = "";
   document.getElementById("message-input")?.focus();
 }
 
-chat.on("user", (user) => {
+socket.on("user", (user) => {
+  console.log("????");
   localStorage.setItem("id", user.id);
   userRef.value = user;
 });
 
-chat.on("pair", (rcptname) => {
+socket.on("pair", (rcptname) => {
   if (userRef.value) {
     userRef.value.rcptName = rcptname;
   }
 });
 
-chat.on("private_message", (msg) => {
+socket.on("private_message", (msg) => {
   if (userRef.value) {
     userRef.value.messages.unshift(msg);
   }
 });
 
-chat.on("unpair", () => {
+socket.on("unpair", () => {
   if (userRef.value) {
     userRef.value.rcptName = undefined;
     userRef.value.messages = [];
   }
 });
 
-chat.on("connect_error", (err) => {
+socket.on("connect_error", (err) => {
   localStorage.removeItem("id");
   userRef.value = undefined;
   console.log("Connect error: " + err.message);

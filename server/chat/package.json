@@ -1,8 +1,8 @@
 {
-  "name": "server",
-  "version": "1.0.0",
+  "name": "chat",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon index.ts",
+    "dev": "tsx watch index.ts",
     "build": "tsc index.ts",
     "start": "node index.js"
   },

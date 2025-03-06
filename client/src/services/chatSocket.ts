@@ -1,30 +1,25 @@
 import { io, Socket } from "socket.io-client";
 
 const testUrl = "http://localhost:3000/";
-const baseUrl = "https://ice-wss.up.railway.app/";
+const baseUrl = "https://chat-socket.up.railway.app/";
 
-const chat: Socket<ChatS2C, ChatC2S> = io(testUrl + "chat", { autoConnect: false });
-// const hive: Socket<ChatS2C, ChatC2S> = io(baseUrl + "hive", { autoConnect: false });
+const socket: Socket<S2CE, C2SE> = io(baseUrl, { autoConnect: false });
 
-chat.onAny((event, ...args) => {
+socket.onAny((event, ...args) => {
   console.log("chat: " + event, ...args);
 });
 
-// hive.onAny((event, ...args) => {
-//   console.log("hive events: " + event, ...args);
-// });
-
-export default chat;
+export default socket;
 
 // Types
-interface ChatS2C {
+interface S2CE {
   user: (user: User) => void;
   pair: (rcptname: string) => void;
   unpair: () => void;
   private_message: (message: Message) => void;
 }
 
-interface ChatC2S {
+interface C2SE {
   private_message: (content: string) => void;
   leave: () => void;
   delete: () => void;
