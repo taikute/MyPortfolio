@@ -1,0 +1,16 @@
+{
+  "name": "hive-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch index.ts",
+    "build": "tsc index.ts"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
+  }
+}
