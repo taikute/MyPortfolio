@@ -159,8 +159,8 @@ io.on("connect", (socket) => {
   }
 });
 
-log("On http://localhost:3000/");
-log("On https://ice-wss.up.railway.app/");
+log("Local: http://localhost:3000/");
+log("Host: https://chat-socket.up.railway.app/");
 
 // Types
 interface ServerToClientEvents {
