@@ -1,27 +1,59 @@
+<script setup lang="ts">
+import { onMounted, onBeforeUnmount, ref, useTemplateRef } from "vue";
+import spriteUrl from "@/assets/mouse_sprite.png";
+
+const canvas = useTemplateRef("canvas");
+const sprite = new Image();
+sprite.src = spriteUrl;
+
+const frameWidth = 200;
+const frameHeight = 150;
+const totalFrames = 10;
+const frameSpeed = 400;
+let frameIndex = 0;
+
+let animationId: number;
+
+const drawFrame = () => {
+	const mouse = canvas.value;
+	if (!mouse) return;
+
+	const ctx = mouse.getContext("2d");
+	if (!ctx) return;
+
+	ctx.clearRect(0, 0, mouse.width, mouse.height);
+	ctx.save();
+
+	ctx.translate(frameWidth, 0);
+	ctx.scale(-1, 1);
+
+	ctx.drawImage(sprite, frameIndex * frameWidth, 0, frameWidth, frameHeight, 0, 0, frameWidth, frameHeight);
+
+	ctx.restore();
+
+	frameIndex = (frameIndex + 1) % totalFrames;
+	animationId = setTimeout(() => requestAnimationFrame(drawFrame), frameSpeed);
+};
+
+onMounted(() => {
+	sprite.onload = () => drawFrame();
+});
+
+onBeforeUnmount(() => {
+	clearTimeout(animationId);
+});
+</script>
+
 <template>
-	<div class="container" ref="container">
-		<a class="btn" @click="Fullscreen()">Fullscreen</a>
+	<div class="container">
+		<canvas ref="canvas" width="200" height="150"></canvas>
 	</div>
 </template>
 
-<script setup lang="ts">
-import { useTemplateRef } from "vue";
-
-const container = useTemplateRef("container");
-
-function Fullscreen() {
-	if (!container.value) {
-		console.error("Can't find container div.");
-		return;
-	}
-	container.value.requestFullscreen();
-}
-</script>
-
-<style>
+<style scoped>
 .container {
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 }
 </style>
