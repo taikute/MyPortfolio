@@ -8,11 +8,13 @@
 import { useTemplateRef } from "vue";
 
 const container = useTemplateRef("container");
-if (!container) {
-	console.log("NULL");
-}
+
 function Fullscreen() {
-	container.value?.requestFullscreen();
+	if (!container.value) {
+		console.error("Can't find container div.");
+		return;
+	}
+	container.value.requestFullscreen();
 }
 </script>
 
