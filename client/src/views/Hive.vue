@@ -34,9 +34,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import Hive from "@/hive/hive";
+import type { OrientationType } from "@/hive/types";
 
 const hive = ref(new Hive());
-const orient = ref<"orient-landscape" | "orient-portrait">("orient-portrait");
+const orient = ref<OrientationType>("orient-portrait");
 const gameHeight = ref<string>("0px");
 
 onMounted(() => {

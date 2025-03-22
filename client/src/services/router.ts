@@ -4,52 +4,46 @@ import Home from "@/views/Home.vue";
 import CV from "@/views/CV.vue";
 import Projects from "@/views/Projects.vue";
 import Chat from "@/views/Chat.vue";
-import Hive from "@/views/Hive.vue";
-import Test from "@/views/Test.vue";
+import SpyMouse from "@/views/SpyMouse.vue";
 
 const Router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/",
-      component: Home,
-    },
-    {
-      path: "/cv",
-      component: CV,
-      meta: { title: "CV" },
-    },
-    {
-      path: "/projects",
-      component: Projects,
-      meta: { title: "Projects" },
-    },
-    {
-      path: "/chat",
-      component: Chat,
-      meta: { title: "Chat" },
-    },
-    {
-      path: "/hive",
-      component: Hive,
-      meta: { title: "Hive" },
-    },
-    {
-      path: "/test",
-      component: Test,
-      meta: { title: "Test" },
-    },
-  ],
+	history: createWebHistory(import.meta.env.BASE_URL),
+	routes: [
+		{
+			path: "/",
+			component: Home,
+		},
+		{
+			path: "/cv",
+			component: CV,
+			meta: { title: "CV" },
+		},
+		{
+			path: "/projects",
+			component: Projects,
+			meta: { title: "Projects" },
+		},
+		{
+			path: "/chat",
+			component: Chat,
+			meta: { title: "Chat" },
+		},
+		{
+			path: "/spymouse",
+			component: SpyMouse,
+			meta: { title: "Spy Mouse" },
+		},
+	],
 });
 
 const DefaultTitle: string = "Anh Tài";
 Router.afterEach((to) => {
-  let title = to.meta?.title;
-  if (typeof title == "string") {
-    document.title = DefaultTitle + " | " + title;
-  } else {
-    document.title = DefaultTitle;
-  }
+	let title = to.meta?.title;
+	if (typeof title == "string") {
+		document.title = DefaultTitle + " | " + title;
+	} else {
+		document.title = DefaultTitle;
+	}
 });
 
 export default Router;
