@@ -15,7 +15,7 @@ onMounted(async () => {
 
 	window.addEventListener("popstate", () => {
 		console.log("Ngăn chặn Back!");
-		history.pushState(null, "", location.href); // Đẩy lại state để ngăn back
+		history.pushState(null, "", location.href);
 	});
 	await nextTick();
 	const canvas = canvasRef.value!;
