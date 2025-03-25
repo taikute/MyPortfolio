@@ -7,7 +7,7 @@ const containerRef = useTemplateRef("container");
 
 const mouse = new Mouse();
 let lastTime = 0;
-let animationId: number;
+let animationId: number | null;
 let isTouching = false;
 
 onMounted(async () => {
@@ -19,6 +19,8 @@ onMounted(async () => {
 	container.addEventListener("click", (ev) => {
 		container.requestFullscreen();
 	});
+
+	canvas.addEventListener("pointerdown", (ev) => {});
 
 	function loop(time: number) {
 		let delta = time - lastTime;
@@ -39,6 +41,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
+	if (!animationId) return;
 	cancelAnimationFrame(animationId);
 });
 </script>
@@ -56,6 +59,7 @@ onUnmounted(() => {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	touch-action: none;
 }
 
 canvas {
