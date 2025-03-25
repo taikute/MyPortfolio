@@ -1,59 +1,64 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, useTemplateRef } from "vue";
-import spriteUrl from "@/assets/mouse_sprite.png";
+import Mouse from "@/spymouse/mouse";
+import { nextTick, onMounted, onUnmounted, useTemplateRef, watch, watchEffect } from "vue";
 
-const canvas = useTemplateRef("canvas");
-const sprite = new Image();
-sprite.src = spriteUrl;
+const canvasRef = useTemplateRef("canvas");
+const containerRef = useTemplateRef("container");
 
-const frameWidth = 200;
-const frameHeight = 150;
-const totalFrames = 10;
-const frameSpeed = 400;
-let frameIndex = 0;
-
+const mouse = new Mouse();
+let lastTime = 0;
 let animationId: number;
+let isTouching = false;
 
-const drawFrame = () => {
-	const mouse = canvas.value;
-	if (!mouse) return;
+onMounted(async () => {
+	await nextTick();
+	const canvas = canvasRef.value!;
+	const container = containerRef.value!;
+	const ctx = canvas.getContext("2d")!;
 
-	const ctx = mouse.getContext("2d");
-	if (!ctx) return;
+	container.addEventListener("click", (ev) => {
+		container.requestFullscreen();
+	});
 
-	ctx.clearRect(0, 0, mouse.width, mouse.height);
-	ctx.save();
+	function loop(time: number) {
+		let delta = time - lastTime;
+		lastTime = time;
 
-	ctx.translate(frameWidth, 0);
-	ctx.scale(-1, 1);
+		ctx.clearRect(0, 0, canvasRef.value!.width, canvasRef.value!.height);
+		mouse.update(delta);
+		mouse.render(ctx);
 
-	ctx.drawImage(sprite, frameIndex * frameWidth, 0, frameWidth, frameHeight, 0, 0, frameWidth, frameHeight);
+		animationId = requestAnimationFrame(loop);
+	}
+	lastTime = performance.now();
+	animationId = requestAnimationFrame(loop);
 
-	ctx.restore();
-
-	frameIndex = (frameIndex + 1) % totalFrames;
-	animationId = setTimeout(() => requestAnimationFrame(drawFrame), frameSpeed);
-};
-
-onMounted(() => {
-	sprite.onload = () => drawFrame();
+	canvas.addEventListener("pointerdown", (ev) => {
+		console.log(ev);
+	});
 });
 
-onBeforeUnmount(() => {
-	clearTimeout(animationId);
+onUnmounted(() => {
+	cancelAnimationFrame(animationId);
 });
 </script>
 
 <template>
-	<div class="container">
-		<canvas ref="canvas" width="200" height="150"></canvas>
+	<div ref="container" class="container" @click="">
+		<canvas ref="canvas" width="200" height="200"></canvas>
 	</div>
 </template>
 
 <style scoped>
 .container {
+	width: 100%;
+	height: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+canvas {
+	/* touch-action: none; */
 }
 </style>
