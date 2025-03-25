@@ -11,6 +11,12 @@ let animationId: number | null;
 let isTouching = false;
 
 onMounted(async () => {
+	history.pushState(null, "", location.href);
+
+	window.addEventListener("popstate", () => {
+		console.log("Ngăn chặn Back!");
+		history.pushState(null, "", location.href); // Đẩy lại state để ngăn back
+	});
 	await nextTick();
 	const canvas = canvasRef.value!;
 	const container = containerRef.value!;
