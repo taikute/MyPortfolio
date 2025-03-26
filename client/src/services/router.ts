@@ -4,7 +4,6 @@ import Home from "@/views/Home.vue";
 import CV from "@/views/CV.vue";
 import Projects from "@/views/Projects.vue";
 import Chat from "@/views/Chat.vue";
-import SpyMouse from "@/views/SpyMouse.vue";
 
 const Router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,11 +26,6 @@ const Router = createRouter({
 			path: "/chat",
 			component: Chat,
 			meta: { title: "Chat" },
-		},
-		{
-			path: "/spymouse",
-			component: SpyMouse,
-			meta: { title: "Spy Mouse" },
 		},
 	],
 });

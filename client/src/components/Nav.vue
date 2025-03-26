@@ -31,7 +31,6 @@ const navItems = [
 	{ path: "/cv", name: "CV" },
 	{ path: "/projects", name: "Projects" },
 	{ path: "/chat", name: "Chat" },
-	{ path: "/spymouse", name: "Spy Mouse" },
 ];
 
 const menuState = ref<string | null>(null);
